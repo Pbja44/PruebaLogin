@@ -72,17 +72,14 @@ class SubmitButton extends StatelessWidget {
 }
 
 class SkipSaveButton extends StatelessWidget {
-  SkipSaveButton({
+  const SkipSaveButton({
     Key? key,
   }) : super(key: key);
 
-  final LoginController loginController = Get.put(LoginController());
-
-  RegisterationController registerController =
-      Get.put(RegisterationController());
-
   @override
   Widget build(BuildContext context) {
+    final RegisterationController registerController =
+        Get.put(RegisterationController());
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(

@@ -61,8 +61,6 @@ class RegisterationController extends GetxController {
     isLoading.value = true;
     isValidator.value = false;
     try {
-      formKey.currentState!.reset();
-
       var headers = {
         'Content-Type': ApiEndPoints.contentType,
         'Authorization': ApiEndPoints.auth
@@ -74,17 +72,20 @@ class RegisterationController extends GetxController {
         url,
       );
       request.fields['name'] = nameController.value.text;
-      // request.fields['last_name'] = registerLastName;
-      // request.fields['birthdate'] = registerBirthDay;
-      // request.fields['id_country'] = '1';
-      // request.fields['phone'] = registerPhone;
-      // request.fields['phone_code'] = '34';
+      request.fields['last_name'] = lastNameController.value.text;
+      request.fields['birthdate'] = birthDayController.value.text;
+      if (countryRegionController.value.text != '')
+        request.fields['id_country'] = '1';
+      request.fields['phone'] = numberPhoneController.value.text;
+      request.fields['phone_code'] =
+          numberPhoneController.value.text == '' ? 'null' : '34';
       request.fields['email'] = emailController.value.text;
-      // request.fields['password'] = registerPassword;
-      // request.fields['password_confirmation'] = registerRepeatPassword;
-      // request.fields['type'] = 'guest';
-      // request.fields['language'] = 'es';
-      // request.fields['os'] = 'android';
+      request.fields['password'] = passwordController.value.text;
+      request.fields['password_confirmation'] =
+          repetPasswordController.value.text;
+      request.fields['type'] = 'guest';
+      request.fields['language'] = 'es';
+      request.fields['os'] = 'android';
 
       if (avatarPath != '') {
         var addImage = await http.MultipartFile.fromPath(
