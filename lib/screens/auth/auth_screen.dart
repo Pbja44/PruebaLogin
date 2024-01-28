@@ -7,23 +7,17 @@ import 'package:get/get.dart';
 
 import 'package:pruebatecnica/utils/app_variables.dart';
 
-
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({
+class AuthScreen extends StatelessWidget {
+  AuthScreen({
     Key? key,
   }) : super(key: key);
-  @override
-  State<AuthScreen> createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
-  RegisterationController registerationController =
+  final RegisterationController registerationController =
       Get.put(RegisterationController());
 
-  LoginController loginController = Get.put(LoginController());
-  var isLogin = false.obs;
+  final LoginController loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
-    return  authOption;
+    return authOption;
   }
 }

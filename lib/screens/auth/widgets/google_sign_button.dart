@@ -55,7 +55,7 @@ class GoogleSignButton extends StatelessWidget {
               style: TextStyle(
                 color: AppColor.black,
                 fontSize: 16,
-                fontFamily: 'Inter',
+                fontFamily: 'inter',
                 fontWeight: FontWeight.w400,
               ),
             ),

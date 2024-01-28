@@ -8,27 +8,23 @@ import 'package:pruebatecnica/utils/colors.dart';
 
 import '../../../controllers/login_controller.dart';
 import '../../../utils/app_variables.dart';
+import '../../congrats.dart';
+import '../../loadScreen/load_screen.dart';
 import '../auth_screen.dart';
 import '../register_screen.dart';
 
-class SubmitButton extends StatefulWidget {
+class SubmitButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String title;
   const SubmitButton({Key? key, required this.onPressed, required this.title})
       : super(key: key);
 
   @override
-  State<SubmitButton> createState() => _SubmitButtonState();
-}
-
-class _SubmitButtonState extends State<SubmitButton>
-    with TickerProviderStateMixin {
-  LoginController loginController = Get.put(LoginController());
-  RegisterationController registerController =
-      Get.put(RegisterationController());
-
-  @override
   Widget build(BuildContext context) {
+    LoginController loginController = Get.put(LoginController());
+
+    RegisterationController registerController =
+        Get.put(RegisterationController());
     return Container(
       width: Get.width,
       height: 50,
@@ -47,7 +43,7 @@ class _SubmitButtonState extends State<SubmitButton>
               borderRadius: BorderRadius.circular(10), side: BorderSide.none),
           backgroundColor: AppColor.buttonColor,
         ),
-        onPressed: widget.onPressed,
+        onPressed: onPressed,
         child: Obx(
           () => (loginController.isLoading.value ||
                   registerController.isLoading.value)
@@ -60,11 +56,11 @@ class _SubmitButtonState extends State<SubmitButton>
                   ),
                 )
               : Text(
-                  widget.title,
+                  title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontFamily: 'Inter',
+                    fontFamily: 'inter',
                     fontWeight: FontWeight.w400,
                     height: 0,
                   ),
@@ -75,18 +71,13 @@ class _SubmitButtonState extends State<SubmitButton>
   }
 }
 
-class SkipSaveButton extends StatefulWidget {
-  const SkipSaveButton({
+class SkipSaveButton extends StatelessWidget {
+  SkipSaveButton({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<SkipSaveButton> createState() => _SkipSaveButtonState();
-}
+  final LoginController loginController = Get.put(LoginController());
 
-class _SkipSaveButtonState extends State<SkipSaveButton>
-    with TickerProviderStateMixin {
-  LoginController loginController = Get.put(LoginController());
   RegisterationController registerController =
       Get.put(RegisterationController());
 
@@ -100,10 +91,11 @@ class _SkipSaveButtonState extends State<SkipSaveButton>
           CupertinoButton(
             child: const Text('Skip'),
             onPressed: () {
-              Get.back();
-              authOption = const RegisterScreen();
-
-              Get.bottomSheet(isScrollControlled: true, const AuthScreen());
+              Get.offAll(
+                LoadScreen(
+                  ruta: CongratsScreen(),
+                ),
+              );
             },
           ),
           Container(
@@ -117,7 +109,11 @@ class _SkipSaveButtonState extends State<SkipSaveButton>
             ),
             child: TextButton(
               onPressed: () {
-                registerController.registerWithEmail();
+                Get.offAll(
+                  LoadScreen(
+                    ruta: CongratsScreen(),
+                  ),
+                );
               },
               child: Obx(
                 () => (registerController.isLoading.value)
@@ -135,7 +131,7 @@ class _SkipSaveButtonState extends State<SkipSaveButton>
                         style: TextStyle(
                           color: AppColor.white,
                           fontSize: 16,
-                          fontFamily: 'Inter',
+                          fontFamily: 'inter',
                           fontWeight: FontWeight.w400,
                         ),
                       ),

@@ -9,23 +9,17 @@ import '../../utils/colors.dart';
 import '../../utils/image_asset.dart';
 import 'auth_screen.dart';
 
-class AccountExistsScreen extends StatefulWidget {
-  const AccountExistsScreen({
+class AccountExistsScreen extends StatelessWidget {
+  AccountExistsScreen({
     Key? key,
   }) : super(key: key);
-  @override
-  State<AccountExistsScreen> createState() => _AccountExistsScreenState();
-}
-
-class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerProviderStateMixin {
-  RegisterationController registerationController =
+  final RegisterationController registerationController =
       Get.put(RegisterationController());
 
-  LoginController loginController = Get.put(LoginController());
-  var isLogin = false.obs;
+  final LoginController loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: Get.height / 1.1,
       decoration: const BoxDecoration(
@@ -59,7 +53,7 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 17,
-                        fontFamily: 'Inter',
+                        fontFamily: 'inter',
                         fontWeight: FontWeight.w600,
                         height: 0,
                       ),
@@ -85,7 +79,7 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
                   style: TextStyle(
                     color: Color(0xFF4F4F4F),
                     fontSize: 14,
-                    fontFamily: 'Inter',
+                    fontFamily: 'inter',
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -112,7 +106,7 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
-                  fontFamily: 'Inter',
+                  fontFamily: 'inter',
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -125,7 +119,7 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
-                  fontFamily: 'Inter',
+                  fontFamily: 'inter',
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -161,7 +155,7 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.6000000238418579),
                           fontSize: 14,
-                          fontFamily: 'Inter',
+                          fontFamily: 'inter',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -171,7 +165,7 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
                         height: 1,
                         color: const Color(0xFFAEB4C2),
                       ),
-                    ), 
+                    ),
                   ],
                 ),
               ),
@@ -180,10 +174,10 @@ class _AccountExistsScreenState extends State<AccountExistsScreen> with TickerPr
               ),
               GoogleSignButton(
                 onPressed: () {
-                    authOption = const LoginScreen();
+                  authOption = LoginScreen();
                   Get.back();
                   Get.bottomSheet(
-                    const AuthScreen(),
+                    AuthScreen(),
                     isScrollControlled: true,
                     enableDrag: false,
                   );

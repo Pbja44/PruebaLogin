@@ -5,18 +5,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pruebatecnica/controllers/registeration_controller.dart';
 import 'package:pruebatecnica/utils/colors.dart';
 
-class GalleryButton extends StatefulWidget {
-  const GalleryButton({
+class GalleryButton extends StatelessWidget {
+  GalleryButton({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<GalleryButton> createState() => _GalleryButtonState();
-}
-
-class _GalleryButtonState extends State<GalleryButton>
-    with TickerProviderStateMixin {
-  RegisterationController registerationController =
+  final RegisterationController registerationController =
       Get.put(RegisterationController());
 
   @override
@@ -44,7 +38,7 @@ class _GalleryButtonState extends State<GalleryButton>
                         'Choose from photo library',
                         style: TextStyle(
                           fontSize: 15,
-                          fontFamily: 'Inter',
+                          fontFamily: 'inter',
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),
@@ -61,7 +55,7 @@ class _GalleryButtonState extends State<GalleryButton>
                         'Take a photo',
                         style: TextStyle(
                           fontSize: 15,
-                          fontFamily: 'Inter',
+                          fontFamily: 'inter',
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),
@@ -91,7 +85,7 @@ class _GalleryButtonState extends State<GalleryButton>
                   style: TextStyle(
                     color: AppColor.red,
                     fontSize: 15,
-                    fontFamily: 'Inter',
+                    fontFamily: 'inter',
                     fontWeight: FontWeight.w400,
                     height: 0,
                   ),

@@ -8,18 +8,12 @@ import 'package:pruebatecnica/controllers/registeration_controller.dart';
 import '../../../utils/image_asset.dart';
 import '../auth_screen.dart';
 
-class GalleryCroper extends StatefulWidget {
-  const GalleryCroper({
+class GalleryCroper extends StatelessWidget {
+  GalleryCroper({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<GalleryCroper> createState() => _GalleryCroperState();
-}
-
-class _GalleryCroperState extends State<GalleryCroper>
-    with TickerProviderStateMixin {
-  RegisterationController registerationController =
+  final RegisterationController registerationController =
       Get.put(RegisterationController());
 
   @override
@@ -74,8 +68,7 @@ class _GalleryCroperState extends State<GalleryCroper>
                   child: GestureDetector(
                       onTap: () {
                         Get.back();
-                        Get.bottomSheet(
-                            isScrollControlled: true, const AuthScreen());
+                        Get.bottomSheet(isScrollControlled: true, AuthScreen());
                       },
                       child: Image.asset(AppImages.aceptar)),
                 ),

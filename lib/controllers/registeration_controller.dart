@@ -4,48 +4,65 @@ import 'dart:io';
 
 import 'package:pruebatecnica/controllers/login_controller.dart';
 import 'package:pruebatecnica/screens/auth/widgets/gallerycropper.dart';
-import 'package:pruebatecnica/screens/loadScreen/load_screen.dart';
+
 import 'package:pruebatecnica/utils/api_endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-import '../screens/congrats.dart';
+import '../screens/auth/auth_screen.dart';
+import '../screens/auth/profile_photo_screen.dart';
 import '../utils/app_variables.dart';
 
 class RegisterationController extends GetxController {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController birthDayController = TextEditingController();
-  TextEditingController countryRegionController = TextEditingController();
-  TextEditingController numberPhoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController repetPasswordController = TextEditingController();
+  final nameController = TextEditingController().obs;
+  final lastNameController = TextEditingController().obs;
+  final birthDayController = TextEditingController().obs;
+  final countryRegionController = TextEditingController().obs;
+  final numberPhoneController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
+  final passwordController = TextEditingController().obs;
+  final repetPasswordController = TextEditingController().obs;
   final cropperKey = GlobalKey(debugLabel: 'cropperKey');
-  String avatarPath = '';
+  final formKey = GlobalKey<FormState>();
+  RxString avatarPath = ''.obs;
   RxString pathimage = "".obs;
   RxBool isImage = false.obs;
+  RxBool isValidator = false.obs;
   File? fileImage;
   RxBool isLoading = false.obs;
+  final obscureText = true.obs;
+  final obscureText2 = true.obs;
+
+  RxString validApiName = "success".obs;
+  RxString validApiLastName = "success".obs;
+  RxString validApiBirthday = "success".obs;
+  RxString validApiRegion = "success".obs;
+  RxString validApiPhone = "success".obs;
+  RxString validApiEmail = "success".obs;
+  RxString validApiPassword = "success".obs;
+  RxString validApiRepeatPassword = "success".obs;
 
   LoginController loginController = LoginController();
 
-  Future<void> saveData() async {
-    registerName = nameController.text;
-    registerLastName = lastNameController.text;
-    registerBirthDay = birthDayController.text;
-    registerRegion = countryRegionController.text;
-    registerPhone = numberPhoneController.text;
-    registerEmail = emailController.text;
-    registerPassword = passwordController.text;
-    registerRepeatPassword = repetPasswordController.text;
+  Future<void> resetValidator() async {
+    validApiName.value = "success";
+    validApiLastName.value = "success";
+    validApiBirthday.value = "success";
+    validApiRegion.value = "success";
+    validApiPhone.value = "success";
+    validApiEmail.value = "success";
+    validApiPassword.value = "success";
+    validApiRepeatPassword.value = "success";
   }
 
   Future<void> registerWithEmail() async {
     isLoading.value = true;
+    isValidator.value = false;
     try {
+      formKey.currentState!.reset();
+
       var headers = {
         'Content-Type': ApiEndPoints.contentType,
         'Authorization': ApiEndPoints.auth
@@ -56,63 +73,99 @@ class RegisterationController extends GetxController {
         "POST",
         url,
       );
-      log(url.toString());
+      request.fields['name'] = nameController.value.text;
+      // request.fields['last_name'] = registerLastName;
+      // request.fields['birthdate'] = registerBirthDay;
+      // request.fields['id_country'] = '1';
+      // request.fields['phone'] = registerPhone;
+      // request.fields['phone_code'] = '34';
+      request.fields['email'] = emailController.value.text;
+      // request.fields['password'] = registerPassword;
+      // request.fields['password_confirmation'] = registerRepeatPassword;
+      // request.fields['type'] = 'guest';
+      // request.fields['language'] = 'es';
+      // request.fields['os'] = 'android';
 
-      request.fields['name'] = registerName;
-      request.fields['last_name'] = registerLastName;
-      request.fields['birthdate'] = registerBirthDay;
-      request.fields['id_country'] = '1';
-      request.fields['phone'] = registerPhone;
-      request.fields['phone_code'] = '34';
-      request.fields['email'] = registerEmail;
-      request.fields['password'] = registerPassword;
-      request.fields['password_confirmation'] = registerRepeatPassword;
-      request.fields['type'] = 'guest';
-      request.fields['language'] = 'es';
-      request.fields['os'] = 'android';
       if (avatarPath != '') {
         var addImage = await http.MultipartFile.fromPath(
           "image",
-          avatarPath,
+          avatarPath.value,
         );
         request.files.add(addImage);
       }
 
       request.headers.addAll(headers);
-      log(request.fields.entries.toString());
       request.fields.entries;
 
       var response = await request.send();
       var res = await http.Response.fromStream(response);
-      log(res.body.toString());
+      log(res.body);
+
+      final json = jsonDecode(res.body);
 
       if (res.statusCode == 200) {
-        final json = jsonDecode(res.body);
         if (json['status'] == "success") {
-          emailLogin = registerEmail;
-          password = registerPassword;
-          Get.offAll(const LoadScreen(ruta: CongratsScreen()));
-
-          nameController.clear();
-          lastNameController.clear();
-          birthDayController.clear();
-          countryRegionController.clear();
-          repetPasswordController.clear();
-          numberPhoneController.clear();
-          emailController.clear();
-          passwordController.clear();
-          registerName = '';
-          registerLastName = '';
-          registerBirthDay = '';
-          registerRegion = '';
-          registerPhone = '';
-          registerEmail = '';
-          registerPassword = '';
+          emailLogin = emailController.value.text;
+          password = passwordController.value.text;
+          nameController.value.clear();
+          lastNameController.value.clear();
+          birthDayController.value.clear();
+          countryRegionController.value.clear();
+          repetPasswordController.value.clear();
+          numberPhoneController.value.clear();
+          emailController.value.clear();
+          passwordController.value.clear();
+          validApiName.value = "success";
+          validApiLastName.value = "success";
+          validApiBirthday.value = "success";
+          validApiRegion.value = "success";
+          validApiPhone.value = "success";
+          validApiEmail.value = "success";
+          validApiPassword.value = "success";
+          validApiRepeatPassword.value = "success";
+          authOption = ProfilePhotoScreen();
+          Get.back();
+          Get.bottomSheet(isScrollControlled: true, AuthScreen());
         } else {
           throw jsonDecode(res.body)["message"] ?? "Unknown Error Occured";
         }
       } else {
-        throw jsonDecode(res.body)["Message"] ?? "Unknown Error Occured";
+        resetValidator();
+        if (json['data']['errors'] != null) {
+          if (json['data']['errors']['name'] != null) {
+            validApiName.value = json['data']['errors']['name'][0] ?? '';
+          }
+          if (json['data']['errors']['last_name'] != null) {
+            validApiLastName.value =
+                json['data']['errors']['last_name'][0] ?? '';
+          }
+          if (json['data']['errors']['birthdate'] != null) {
+            validApiBirthday.value =
+                json['data']['errors']['birthdate'][0] ?? '';
+          }
+          if (json['data']['errors']['id_country'] != null) {
+            validApiRegion.value =
+                json['data']['errors']['id_country'][0] ?? '';
+          }
+          if (json['data']['errors']['phone'] != null) {
+            validApiPhone.value = json['data']['errors']['phone'][0] ?? '';
+          }
+          if (json['data']['errors']['email'] != null) {
+            validApiEmail.value = json['data']['errors']['email'][0] ?? '';
+          }
+
+          if (json['data']['errors']['password'] != null) {
+            validApiPassword.value =
+                json['data']['errors']['password'][0] ?? '';
+            validApiRepeatPassword.value =
+                json['data']['errors']['password'][0] ?? '';
+          }
+
+          update();
+          formKey.currentState!.validate();
+        } else {
+          throw jsonDecode(res.body)["Message"] ?? "Unknown Error Occured";
+        }
       }
     } catch (e) {
       showDialog(
@@ -126,6 +179,7 @@ class RegisterationController extends GetxController {
           });
     } finally {
       isLoading.value = false;
+      isValidator.value = true;
     }
   }
 
@@ -141,15 +195,16 @@ class RegisterationController extends GetxController {
         "POST",
         url,
       );
-      request.fields['name'] = nameController.text;
-      request.fields['last_name'] = lastNameController.text;
-      request.fields['birthdate'] = birthDayController.text;
+      request.fields['name'] = nameController.value.text;
+      request.fields['last_name'] = lastNameController.value.text;
+      request.fields['birthdate'] = birthDayController.value.text;
       request.fields['id_country'] = '';
-      request.fields['phone'] = numberPhoneController.text;
+      request.fields['phone'] = numberPhoneController.value.text;
       request.fields['phone_code'] = '';
-      request.fields['email'] = emailController.text;
-      request.fields['password'] = passwordController.text;
-      request.fields['password_confirmation'] = repetPasswordController.text;
+      request.fields['email'] = emailController.value.value.text;
+      request.fields['password'] = passwordController.value.text;
+      request.fields['password_confirmation'] =
+          repetPasswordController.value.text;
       request.fields['type'] = 'guest';
       request.fields['language'] = 'es';
       var addImage = await http.MultipartFile.fromPath(
@@ -166,18 +221,20 @@ class RegisterationController extends GetxController {
       if (res.statusCode == 200) {
         final json = jsonDecode(res.body);
         if (json['status'] == "success") {
-          loginController.emailController.text = emailController.text;
-          loginController.passwordController.text = passwordController.text;
+          loginController.emailController.value.text =
+              emailController.value.text;
+          loginController.passwordController.value.text =
+              passwordController.value.text;
           loginController.loginWithEmail();
 
-          nameController.clear();
-          lastNameController.clear();
-          birthDayController.clear();
-          countryRegionController.clear();
-          repetPasswordController.clear();
-          numberPhoneController.clear();
-          emailController.clear();
-          passwordController.clear();
+          nameController.value.clear();
+          lastNameController.value.clear();
+          birthDayController.value.clear();
+          countryRegionController.value.clear();
+          repetPasswordController.value.clear();
+          numberPhoneController.value.clear();
+          emailController.value.clear();
+          passwordController.value.clear();
         } else {
           throw jsonDecode(res.body)["message"] ?? "Unknown Error Occured";
         }
@@ -208,9 +265,9 @@ class RegisterationController extends GetxController {
     fileImage = File(pickedImage.path);
     isImage.value = true;
 
-    avatarPath = pathimage.value;
+    avatarPath = pathimage;
 
-    Get.bottomSheet(const GalleryCroper(),
+    Get.bottomSheet(GalleryCroper(),
         enableDrag: false, isScrollControlled: true);
   }
 }

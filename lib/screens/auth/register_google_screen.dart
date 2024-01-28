@@ -6,20 +6,13 @@ import 'package:get/get.dart';
 
 import '../../utils/colors.dart';
 
-class RegisterGoogleScreen extends StatefulWidget {
-  const RegisterGoogleScreen({
+class RegisterGoogleScreen extends StatelessWidget {
+  RegisterGoogleScreen({
     Key? key,
   }) : super(key: key);
-  @override
-  State<RegisterGoogleScreen> createState() => _RegisterGoogleScreenState();
-}
-
-class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
-    with TickerProviderStateMixin {
-  RegisterationController registerationController =
+  final RegisterationController registerationController =
       Get.put(RegisterationController());
 
-  var isLogin = false.obs;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +42,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 17,
-                      fontFamily: 'Inter',
+                      fontFamily: 'inter',
                       fontWeight: FontWeight.w600,
                       height: 0,
                     ),
@@ -69,39 +62,45 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
               height: 20,
             ),
             InputTextFieldWidget(
+                validator: registerationController.validApiName,
                 type: 'name',
-                textEditingController: registerationController.nameController,
+                textEditingController:
+                    registerationController.nameController.value,
                 hintText: 'Name'),
             const SizedBox(
               height: 23,
             ),
             InputTextFieldWidget(
+                validator: registerationController.validApiLastName,
                 type: 'name',
                 textEditingController:
-                    registerationController.lastNameController,
+                    registerationController.lastNameController.value,
                 hintText: 'Last name'),
             const SizedBox(
               height: 23,
             ),
             InputTextFielDatePickerdWidget(
+                validator: registerationController.validApiBirthday,
                 textEditingController:
-                    registerationController.birthDayController,
+                    registerationController.birthDayController.value,
                 hintText: 'Birthday'),
             const SizedBox(
               height: 23,
             ),
             InputTextFieldWidget(
+                validator: registerationController.validApiRegion,
                 type: 'region',
                 textEditingController:
-                    registerationController.countryRegionController,
+                    registerationController.countryRegionController.value,
                 hintText: 'Country/Region'),
             const SizedBox(
               height: 23,
             ),
             InputTextFieldWidget(
+                validator: registerationController.validApiPhone,
                 type: 'phone',
                 textEditingController:
-                    registerationController.numberPhoneController,
+                    registerationController.numberPhoneController.value,
                 hintText: 'Number Phone'),
             const SizedBox(
               height: 40,
@@ -117,14 +116,16 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
               height: 20,
             ),
             InputTextFieldWidget(
+                validator: registerationController.validApiEmail,
                 type: 'email',
-                textEditingController: registerationController.emailController,
+                textEditingController:
+                    registerationController.emailController.value,
                 hintText: 'Email'),
             const SizedBox(
               height: 50,
             ),
-             Padding(
-              padding:const EdgeInsets.symmetric(horizontal: 25.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Text.rich(
                 TextSpan(
                   children: [
@@ -133,7 +134,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
                       style: TextStyle(
                         color: AppColor.termConditionText,
                         fontSize: 14,
-                        fontFamily: 'Inter',
+                        fontFamily: 'inter',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -142,7 +143,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
                       style: TextStyle(
                         color: AppColor.termConditionText,
                         fontSize: 14,
-                        fontFamily: 'Inter',
+                        fontFamily: 'inter',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -151,7 +152,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
                       style: TextStyle(
                         color: AppColor.termConditionText,
                         fontSize: 14,
-                        fontFamily: 'Inter',
+                        fontFamily: 'inter',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -160,7 +161,7 @@ class _RegisterGoogleScreenState extends State<RegisterGoogleScreen>
                       style: TextStyle(
                         color: AppColor.termConditionText,
                         fontSize: 14,
-                        fontFamily: 'Inter',
+                        fontFamily: 'inter',
                         fontWeight: FontWeight.w600,
                       ),
                     ),

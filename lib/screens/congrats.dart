@@ -9,22 +9,10 @@ import 'package:pruebatecnica/utils/colors.dart';
 import '../controllers/login_controller.dart';
 import '../utils/image_asset.dart';
 
-class CongratsScreen extends StatefulWidget {
-  const CongratsScreen({Key? key}) : super(key: key);
+class CongratsScreen extends StatelessWidget {
+  CongratsScreen({Key? key}) : super(key: key);
 
-  @override
-  State<CongratsScreen> createState() => _CongratsScreenState();
-}
-
-class _CongratsScreenState extends State<CongratsScreen> {
-    LoginController loginController = Get.put(LoginController());
-  @override
-  void initState() {
-
-
-    // TODO: implement initState
-    super.initState();
-  }
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +37,13 @@ class _CongratsScreenState extends State<CongratsScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 22,
-                  fontFamily: 'Inter',
+                  fontFamily: 'inter',
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               const SizedBox(
                 width: 251,
                 height: 42,
@@ -63,7 +53,7 @@ class _CongratsScreenState extends State<CongratsScreen> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
-                    fontFamily: 'Inter',
+                    fontFamily: 'inter',
                     fontWeight: FontWeight.w300,
                     letterSpacing: -0.41,
                   ),
@@ -72,13 +62,10 @@ class _CongratsScreenState extends State<CongratsScreen> {
               const Spacer(),
               SubmitButton(
                   onPressed: () {
-                    
-                    loginController.emailController.text =
-                    emailLogin ; 
-                    loginController.passwordController.text = password;
+                    loginController.emailController.value.text = emailLogin;
+                    loginController.passwordController.value.text = password;
                     log(emailLogin);
-                       loginController.loginWithEmail();
-                   
+                    loginController.loginWithEmail();
                   },
                   title: "Continue"),
               const SizedBox(

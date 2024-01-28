@@ -7,20 +7,13 @@ import '../../utils/colors.dart';
 import '../../utils/image_asset.dart';
 import 'widgets/submit_button.dart';
 
-class ProfilePhotoScreen extends StatefulWidget {
-  const ProfilePhotoScreen({
+class ProfilePhotoScreen extends StatelessWidget {
+  ProfilePhotoScreen({
     Key? key,
   }) : super(key: key);
-  @override
-  State<ProfilePhotoScreen> createState() => _ProfilePhotoScreenState();
-}
-
-class _ProfilePhotoScreenState extends State<ProfilePhotoScreen>
-    with TickerProviderStateMixin {
-  RegisterationController registerationController =
+  final RegisterationController registerationController =
       Get.put(RegisterationController());
 
-  var isLogin = false.obs;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +32,7 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen>
           Column(
             children: [
               const SizedBox(height: 25.0),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,7 +44,7 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen>
                       style: TextStyle(
                         color: AppColor.black,
                         fontSize: 17,
-                        fontFamily: 'Inter',
+                        fontFamily: 'inter',
                         fontWeight: FontWeight.w600,
                         height: 0,
                       ),
@@ -104,7 +97,7 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen>
                       width: 150,
                       height: 50,
                       decoration: ShapeDecoration(
-                        color:AppColor.buttonPhotoColor ,
+                        color: AppColor.buttonPhotoColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -113,19 +106,19 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen>
                         onPressed: () {
                           Get.bottomSheet(
                             isScrollControlled: false,
-                            const GalleryButton(),
+                            GalleryButton(),
                           );
                         },
-                        icon:  Icon(
+                        icon: Icon(
                           CupertinoIcons.camera,
                           color: AppColor.cameraColor,
                         ),
-                        label:  Text(
+                        label: Text(
                           'Upload',
                           style: TextStyle(
                             color: AppColor.cameraColor,
                             fontSize: 18,
-                            fontFamily: 'Inter',
+                            fontFamily: 'inter',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -137,7 +130,7 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen>
             ),
           ),
           const Spacer(),
-         const SkipSaveButton(),
+          SkipSaveButton(),
         ],
       ),
     );

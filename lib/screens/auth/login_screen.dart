@@ -1,5 +1,4 @@
 import 'package:pruebatecnica/controllers/login_controller.dart';
-import 'package:pruebatecnica/controllers/registeration_controller.dart';
 import 'package:pruebatecnica/screens/auth/account_exists_screen.dart';
 import 'package:pruebatecnica/screens/auth/auth_screen.dart';
 import 'package:pruebatecnica/screens/auth/widgets/google_sign_button.dart';
@@ -10,23 +9,11 @@ import 'package:get/get.dart';
 import 'package:pruebatecnica/utils/app_variables.dart';
 import '../../utils/colors.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends GetView<LoginController> {
   const LoginScreen({
     Key? key,
   }) : super(key: key);
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
 
-class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
-  RegisterationController registerationController =
-      Get.put(RegisterationController());
-  final _formKey = GlobalKey<FormState>(debugLabel: 'login');
-
-  LoginController loginController = Get.put(LoginController());
-  var isLogin = false.obs;
-  var obscureText = true.obs;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Form(
-            key: _formKey,
+            key: controller.formKey,
             child: Column(
               children: [
                 const SizedBox(height: 25.0),
@@ -64,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen>
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 17,
-                          fontFamily: 'Inter',
+                          fontFamily: 'inter',
                           fontWeight: FontWeight.w600,
                           height: 0,
                         ),
@@ -84,23 +71,26 @@ class _LoginScreenState extends State<LoginScreen>
                   height: 20,
                 ),
                 InputTextFieldWidget(
-                    textEditingController: loginController.emailController,
+                    validator: 'success'.obs,
+                    textEditingController: controller.emailController.value,
                     type: 'email',
                     hintText: 'Email'),
                 const SizedBox(
                   height: 23,
                 ),
                 Obx(
-                  () => (loginController.isUser.value)
+                  () => (controller.isUser.value)
                       ? InputTextFieldWidget(
+                          validator: 'success'.obs,
                           type: 'password',
                           textEditingController:
-                              loginController.passwordController,
-                          obscureText: obscureText.value,
+                              controller.passwordController.value,
+                          obscureText: controller.obscureText.value,
                           hintText: 'Password',
                           iconData: IconButton(
                             onPressed: () {
-                              obscureText.value = !obscureText.value;
+                              controller.obscureText.value =
+                                  !controller.obscureText.value;
                             },
                             icon: const Icon(Icons.remove_red_eye_outlined),
                           ),
@@ -108,14 +98,14 @@ class _LoginScreenState extends State<LoginScreen>
                       : Container(),
                 ),
                 Obx(
-                  () => (loginController.isUser.value)
+                  () => (controller.isUser.value)
                       ? const SizedBox(
                           height: 20,
                         )
                       : Container(),
                 ),
                 Obx(
-                  () => (loginController.isUser.value)
+                  () => (controller.isUser.value)
                       ? Container(
                           width: Get.width,
                           height: 20,
@@ -126,25 +116,26 @@ class _LoginScreenState extends State<LoginScreen>
                             style: TextStyle(
                               color: Color(0xFF4F4F4F),
                               fontSize: 14,
-                              fontFamily: 'Inter',
+                              fontFamily: 'inter',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                         )
                       : Container(),
                 ),
-                 Obx(
-                  () => (loginController.isUser.value)
-                      ?  const SizedBox(
-                  height: 20,
-                ): Container(),),
+                Obx(
+                  () => (controller.isUser.value)
+                      ? const SizedBox(
+                          height: 20,
+                        )
+                      : Container(),
+                ),
                 SubmitButton(
                   onPressed: () {
-           
-                    if (_formKey.currentState!.validate()) {
-                      loginController.isUser.value
-                          ? loginController.loginWithEmail()
-                          : loginController.checkEmail();
+                    if (controller.formKey.currentState!.validate()) {
+                      controller.isUser.value
+                          ? controller.loginWithEmail()
+                          : controller.checkEmail();
                     }
                   },
                   title: 'Continue',
@@ -173,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen>
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.6000000238418579),
                           fontSize: 14,
-                          fontFamily: 'Inter',
+                          fontFamily: 'inter',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -192,10 +183,10 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               GoogleSignButton(
                 onPressed: () {
-                  authOption = const AccountExistsScreen();
+                  authOption = AccountExistsScreen();
                   Get.back();
                   Get.bottomSheet(
-                    const AuthScreen(),
+                    AuthScreen(),
                     isScrollControlled: true,
                     enableDrag: false,
                   );

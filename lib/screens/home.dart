@@ -4,17 +4,11 @@ import 'package:pruebatecnica/utils/app_variables.dart';
 import 'package:pruebatecnica/utils/colors.dart';
 
 import '../utils/image_asset.dart';
- 
-class HomeScreen extends StatefulWidget {
+
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +19,9 @@ class _HomeScreenState extends State<HomeScreen> {
         toolbarHeight: 80,
         leadingWidth: 300,
         leading: AppBarHome(
-          image:avatar,
-          name:  "$userName $userLastName",
+          image: avatar,
+          name: "$userName $userLastName",
         ),
-    
       ),
       body: Center(
         child: SizedBox(

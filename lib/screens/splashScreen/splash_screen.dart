@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2), () async {
-      Get.bottomSheet(isScrollControlled: true, const AuthScreen());
+      Get.bottomSheet(isScrollControlled: true, AuthScreen());
     });
 
     super.initState();
@@ -26,9 +26,14 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: SizedBox(
           height: Get.height / 6.1,
-          child: Image.asset(
-            AppImages.splashLogo,
-            width: 150.0,
+          child: GestureDetector(
+            onTap: () {
+              Get.bottomSheet(isScrollControlled: true, AuthScreen());
+            },
+            child: Image.asset(
+              AppImages.splashLogo,
+              width: 150.0,
+            ),
           ),
         ),
       ),

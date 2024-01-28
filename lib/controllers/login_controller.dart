@@ -13,12 +13,14 @@ import 'package:pruebatecnica/utils/app_variables.dart';
 import '../screens/auth/auth_screen.dart';
 
 class LoginController extends GetxController {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-    late RegisterationController registerationController =
+  Rx<TextEditingController> emailController = TextEditingController().obs;
+  Rx<TextEditingController> passwordController = TextEditingController().obs;
+  late RegisterationController registerationController =
       Get.put(RegisterationController());
   RxBool isLoading = false.obs;
   RxBool isUser = false.obs;
+  final obscureText = true.obs;
+  final formKey = GlobalKey<FormState>(debugLabel: 'login');
 
   Future<void> loginWithEmail() async {
     var headers = {
@@ -31,8 +33,8 @@ class LoginController extends GetxController {
           ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.loginEmail);
       log(url.toString());
       Map body = {
-        'email': emailController.text.trim(),
-        'password': passwordController.text,
+        'email': emailController.value.text.trim(),
+        'password': passwordController.value.text,
         'os': 'android',
         'type': 'guest',
         'fcm_token': 'DFGKNODFIJO34U89FGKNO',
@@ -45,13 +47,14 @@ class LoginController extends GetxController {
         final json = jsonDecode(response.body);
 
         if (json['status'] == 'success') {
-          emailController.clear();
-          passwordController.clear();
-          userLastName = json['data']['customer']['last_name']??'';
-          avatar =json['data']['customer']['avatar']?? '';
-          userName = json['data']['customer']['name']?? '';
-          await Get.off(const LoadScreen(ruta: HomeScreen(),));
-         
+          emailController.value.clear();
+          passwordController.value.clear();
+          userLastName = json['data']['customer']['last_name'] ?? '';
+          avatar = json['data']['customer']['avatar'] ?? '';
+          userName = json['data']['customer']['name'] ?? '';
+          await Get.off(const LoadScreen(
+            ruta: HomeScreen(),
+          ));
         } else if (json['status'] == "failure") {
           throw jsonDecode(response.body)['message'];
         }
@@ -84,7 +87,7 @@ class LoginController extends GetxController {
           ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.checkEmail);
       log(url.toString());
       Map body = {
-        'email': emailController.text.trim(),
+        'email': emailController.value.text.trim(),
       };
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: headers);
@@ -93,10 +96,11 @@ class LoginController extends GetxController {
         final json = jsonDecode(response.body);
 
         if (json['status'] == 'success') {
-          registerationController.emailController.text = emailController.text;
-          emailController.clear();
-          passwordController.clear();
-          authOption = const RegisterScreen();
+          registerationController.emailController.value.text =
+              emailController.value.text;
+          emailController.value.clear();
+          passwordController.value.clear();
+          authOption = RegisterScreen();
           Get.back();
           Get.bottomSheet(isScrollControlled: true, AuthScreen());
         }
